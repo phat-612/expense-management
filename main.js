@@ -5,6 +5,9 @@ const inpPrice = document.querySelector('#inp_price');
 const btnAdd = document.querySelector('#btn_add');
 const eleTbody = document.querySelector('tbody');
 const eleTotal = document.querySelector('.total span');
+const selFilter = document.querySelector('#filter');
+
+
 
 function setExpense(data) {
     localStorage.setItem('expense', JSON.stringify(data));
@@ -25,7 +28,29 @@ function formatTime(timeSeconds) {
 }
 function loadPage() {
     let data = loadExpense();
-    console.log(data);
+    let filterType = selFilter.value;
+    if (filterType == 'today') {
+        data = data.filter((item) => new Date(item.time).toLocaleDateString() == new Date().toLocaleDateString());
+    } else if (filterType == 'yesterday') {
+        let currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
+        let yesterdayDate = currentDate.toLocaleDateString();
+        data = data.filter((item) => new Date(item.time).toLocaleDateString() == yesterdayDate);
+    } else if (filterType == 'week') {
+        let currentDate = new Date();
+        let currentDay = currentDate.getDay();
+        let firstDayOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDay)).toLocaleDateString();
+        let lastDayOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDay + 6)).toLocaleDateString();
+        let itemTime = new Date(item.time).toLocaleDateString();
+        data = data.filter((item) => itemTime > firstDayOfWeek && itemTime < lastDayOfWeek);
+    } else if (filterType == 'month') {
+        let currentDate = new Date();
+        let firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        let lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        let itemTime = new Date(item.time).toLocaleDateString();
+        data = data.filter((item) => itemTime > firstDayOfMonth && itemTime < lastDayOfMonth);
+    }
+    data = data.filter((item) => item.time);
     if (data.length < 1) {
         eleTbody.innerHTML = '';
         return;
