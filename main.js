@@ -95,7 +95,7 @@ selFilter.addEventListener('change', (e) => {
 inpPrice.addEventListener('keydown', (e) => {
     let keycode = e.keyCode || e.which;
     console.log(keycode);
-    if (keycode === 9) {
+    if (keycode == 9 || keycode == 13) {
         alert(3123123);
     }
 })
