@@ -41,14 +41,18 @@ function loadPage() {
         let currentDay = currentDate.getDay();
         let firstDayOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDay)).toLocaleDateString();
         let lastDayOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDay + 6)).toLocaleDateString();
-        let itemTime = new Date(item.time).toLocaleDateString();
-        data = data.filter((item) => itemTime > firstDayOfWeek && itemTime < lastDayOfWeek);
+        data = data.filter((item) => {
+            let itemTime = new Date(item.time).toLocaleDateString();
+            return itemTime > firstDayOfWeek && itemTime < lastDayOfWeek
+        });
     } else if (filterType == 'month') {
         let currentDate = new Date();
         let firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         let lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-        let itemTime = new Date(item.time).toLocaleDateString();
-        data = data.filter((item) => itemTime > firstDayOfMonth && itemTime < lastDayOfMonth);
+        data = data.filter((item) => {
+            let itemTime = new Date(item.time).toLocaleDateString();
+            return itemTime > firstDayOfMonth && itemTime < lastDayOfMonth;
+        });
     }
     data = data.filter((item) => item.time);
     if (data.length < 1) {
@@ -85,7 +89,9 @@ if (!localStorage.getItem(LOCALNAME)) {
 }
 loadPage();
 
-
+selFilter.addEventListener('click', (e) => {
+    loadPage();
+});
 btnAdd.addEventListener('click', (e) => {
     let expense = loadExpense();
     let name = inpName.value;
