@@ -92,11 +92,6 @@ loadPage();
 selFilter.addEventListener('change', (e) => {
     loadPage();
 });
-inpPrice.addEventListener('keydown', (e) => {
-    let keycode = e.keyCode || e.which;
-    alert(keycode);
-
-})
 btnAdd.addEventListener('click', (e) => {
     let expense = loadExpense();
     let name = inpName.value;
